@@ -6,6 +6,7 @@ import com.chatnheal.dto.common.StandardResponse;
 import com.chatnheal.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +29,11 @@ public class ChatController {
     })
     @PostMapping("/send")
     public ResponseEntity<StandardResponse<ChatResponse>> sendMessage(@RequestBody ChatRequest request,
-                                                                      @RequestHeader("X-User-Id") String userId) {
+                                                                      HttpServletRequest http) {
+        String userId = (String) http.getAttribute("uid"); // Securely retrieved
         ChatResponse response = chatService.processMessage(userId, request);
-        return ResponseEntity.ok(StandardResponse.success(response, "Message sent successfully"));
+        return ResponseEntity.ok(StandardResponse.success(response, "Message sent"));
     }
+
 }
 

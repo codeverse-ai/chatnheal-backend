@@ -8,6 +8,7 @@ import com.chatnheal.service.CoachService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,8 @@ public class CoachController {
     })
     @PostMapping("/book")
     public ResponseEntity<BookingResponse> bookCoach(@RequestBody BookingRequest request,
-                                                     @RequestHeader("X-User-Id") String userId) {
+                                                     HttpServletRequest http) {
+        String userId = (String) http.getAttribute("uid");
         return ResponseEntity.ok(coachService.bookCoach(userId, request));
     }
 
@@ -54,7 +56,8 @@ public class CoachController {
             @ApiResponse(responseCode = "500", description = "Server error")
     })
     @GetMapping("/my-bookings")
-    public ResponseEntity<List<CoachBooking>> myBookings(@RequestHeader("X-User-Id") String userId) {
+    public ResponseEntity<List<CoachBooking>> myBookings( HttpServletRequest http) {
+        String userId = (String) http.getAttribute("uid");
         return ResponseEntity.ok(coachService.getBookings(userId));
     }
 }

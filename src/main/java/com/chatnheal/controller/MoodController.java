@@ -6,6 +6,7 @@ import com.chatnheal.service.MoodService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,8 @@ public class MoodController {
     })
     @PostMapping("/today")
     public ResponseEntity<MoodResponse> trackToday(@RequestBody MoodRequest request,
-                                                   @RequestHeader("X-User-Id") String userId) {
+                                                   HttpServletRequest http) {
+        String userId = (String) http.getAttribute("uid");
         MoodResponse response = moodService.saveMood(userId, request);
         return ResponseEntity.ok(response);
     }
@@ -41,7 +43,8 @@ public class MoodController {
             @ApiResponse(responseCode = "500", description = "Server error")
     })
     @GetMapping("/history")
-    public ResponseEntity<List<MoodResponse>> getHistory(@RequestHeader("X-User-Id") String userId) {
+    public ResponseEntity<List<MoodResponse>> getHistory( HttpServletRequest http) {
+        String userId = (String) http.getAttribute("uid");
         return ResponseEntity.ok(moodService.getHistory(userId));
     }
 }

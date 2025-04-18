@@ -6,6 +6,7 @@ import com.chatnheal.service.JournalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,8 @@ public class JournalController {
     })
     @PostMapping("/write")
     public ResponseEntity<JournalResponse> writeEntry(@RequestBody JournalRequest request,
-                                                      @RequestHeader("X-User-Id") String userId) {
+                                                      HttpServletRequest http) {
+        String userId = (String) http.getAttribute("uid");
         return ResponseEntity.ok(journalService.save(userId, request));
     }
 
@@ -40,7 +42,8 @@ public class JournalController {
             @ApiResponse(responseCode = "500", description = "Server error")
     })
     @GetMapping("/all")
-    public ResponseEntity<List<JournalResponse>> getAll(@RequestHeader("X-User-Id") String userId) {
+    public ResponseEntity<List<JournalResponse>> getAll( HttpServletRequest http) {
+        String userId = (String) http.getAttribute("uid");
         return ResponseEntity.ok(journalService.getAll(userId));
     }
 }

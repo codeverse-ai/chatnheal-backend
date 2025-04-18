@@ -13,7 +13,7 @@ import java.util.Date;
 public class ChatService {
 
     @Autowired
-    private GptService gptService;
+    private com.chatnheal.service.GptService gptService;
 
     @Autowired
     private ChatMessageRepository chatRepo;

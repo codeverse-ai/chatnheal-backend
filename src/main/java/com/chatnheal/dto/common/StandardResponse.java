@@ -1,23 +1,31 @@
 package com.chatnheal.dto.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class StandardResponse<T> {
     private boolean success;
     private String message;
     private T data;
 
+    public StandardResponse() {}
+
+    public StandardResponse(boolean success, String message, T data) {
+        this.success = success;
+        this.message = message;
+        this.data = data;
+    }
+
     public static <T> StandardResponse<T> success(T data, String message) {
         return new StandardResponse<>(true, message, data);
     }
 
-    public static <T> StandardResponse<T> failure(String message) {
-        return new StandardResponse<>(false, message, null);
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public T getData() {
+        return data;
     }
 }
-

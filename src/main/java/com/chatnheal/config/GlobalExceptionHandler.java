@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(IllegalArgumentException.class)
+  /*  @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<StandardResponse<Object>> handleIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(StandardResponse.failure(ex.getMessage()));
     }
@@ -20,6 +20,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardResponse<Object>> handleGeneral(Exception ex) {
         return ResponseEntity.internalServerError().body(StandardResponse.failure("Unexpected error occurred."));
-    }
+    }*/
 }
 

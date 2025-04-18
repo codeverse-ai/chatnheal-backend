@@ -8,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+
 import  com.chatnheal.service.GptService;
 
 class ChatServiceTest {
@@ -33,7 +36,7 @@ class ChatServiceTest {
         request.setUserMessage("Hi");
         request.setCompanionId("dadi001");
 
-        Mockito.when(gptService.getReply(Mockito.any(), Mockito.eq("Hi")))
+        Mockito.when(gptService.getReply(any(), eq("Hi")))
                 .thenReturn("Hello beta, how can I help?");
 
         ChatResponse response = chatService.processMessage(userId, request);
@@ -42,6 +45,22 @@ class ChatServiceTest {
         assertEquals("Wise Dadi", response.getPersonaName());
         assertEquals("Hello beta, how can I help?", response.getReply());
 
-        Mockito.verify(chatRepo, Mockito.times(1)).save(Mockito.any(ChatMessage.class));
+        Mockito.verify(chatRepo, Mockito.times(1)).save(any(ChatMessage.class));
     }
+
+        @Test
+        void shouldGenerateReplyAndSave() {
+            ChatRequest req = new ChatRequest();
+            req.setUserMessage("Hello");
+            req.setCompanionId("dadi");
+
+            Mockito.when(gptService.getReply(any(), eq("Hello"))).thenReturn("Hello child");
+
+            ChatResponse res = chatService.processMessage("user123", req);
+
+            assertEquals("Hello child", res.getReply());
+            Mockito.verify(chatRepo).save(any());
+        }
+
+
 }
